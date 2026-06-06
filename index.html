@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>Studyum - 勉強で進化する学習バトル</title>
+  <meta name="description" content="中学・高校の勉強がゲームに。ペットを進化させながら楽しく学ぼう。">
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icon-167.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Studyum">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #0a0f1e;
+      color: #f8fafc;
+      font-family: "Hiragino Maru Gothic ProN", "Quicksand", "Yu Gothic", sans-serif;
+      overflow-x: hidden;
+      overscroll-behavior: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    #root { min-height: 100vh; }
+    .loading {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #0a0f1e;
+      z-index: 9999;
+    }
+    .loading-emoji { font-size: 60px; animation: bounce 1.5s ease-in-out infinite; }
+    .loading-text { margin-top: 12px; color: #94a3b8; font-size: 14px; text-align: center; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading">
+    <div>
+      <div class="loading-emoji">🥚</div>
+      <div class="loading-text">読み込み中...</div>
+    </div>
+  </div>
+  
+  <div id="root"></div>
+  
+  <script>
+    window.storage = {
+      async get(key) {
+        try {
+          const value = localStorage.getItem(key);
+          return value ? { key, value } : null;
+        } catch (e) { return null; }
+      },
+      async set(key, value) {
+        try {
+          localStorage.setItem(key, value);
+          return { key, value };
+        } catch (e) { return null; }
+      },
+      async delete(key) {
+        try {
+          localStorage.removeItem(key);
+          return { key, deleted: true };
+        } catch (e) { return null; }
+      },
+      async list(prefix) {
+        const keys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (!prefix || k.startsWith(prefix)) keys.push(k);
+        }
+        return { keys, prefix };
+      },
+    };
+  </script>
+  
+  <script type="text/babel" data-type="module" src="StudyDuel.jsx"></script>
+  
+  <script type="text/babel">
+    setTimeout(() => {
+      try {
+        const App = window.App || (() => React.createElement("div", null, "Loading..."));
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(React.createElement(App));
+        document.getElementById("loading").style.display = "none";
+      } catch (e) {
+        console.error("Failed to mount:", e);
+        document.getElementById("loading").innerHTML = "<div style='color:#fff;text-align:center;'>エラー: " + e.message + "</div>";
+      }
+    }, 100);
+  </script>
+  
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(console.warn);
+      });
+    }
+  </script>
+</body>
+</html>
