@@ -1,0 +1,26 @@
+{
+  "name": "Studyum - 勉強で進化する学習バトル",
+  "short_name": "Studyum",
+  "description": "中学・高校の勉強がゲームに。ペットを進化させながら楽しく学ぼう。",
+  "start_url": "/studyum-app/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0f1e",
+  "theme_color": "#0a0f1e",
+  "categories": ["education", "games"],
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
